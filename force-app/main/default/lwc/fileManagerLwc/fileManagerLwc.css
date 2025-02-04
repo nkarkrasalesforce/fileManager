@@ -1,0 +1,35 @@
+article.slds-custom-card {
+	border-color: #c9c9c9 !important;
+    border: 1px solid #c9c9c9 !important;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+article.slds-custom-card .slds-card__header{
+	margin-bottom: 0px;
+	background: #f3f3f3;
+    border-bottom: 1px solid #c9c9c9;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+article.slds-custom-card .slds-card__body{
+    background-color: #fff;
+}
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  background-color: var(--slds-g-color-neutral-base-80, var(--lwc-brandDisabled, rgb(201, 199, 197)));
+  border-color: var(--slds-g-color-neutral-base-80, var(--lwc-brandDisabled, rgb(201, 199, 197)));
+  color: var(--slds-g-color-neutral-base-100, var(--lwc-colorTextButtonBrandDisabled, rgb(255, 255, 255)));
+}
+
+
+.max350{
+    max-height: 325px;
+    overflow: auto;
+}

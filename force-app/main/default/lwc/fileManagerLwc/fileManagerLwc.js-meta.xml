@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+	<masterLabel>File Manager</masterLabel>
+	<apiVersion>62.0</apiVersion>
+	<description>The File Manager LWC component displays a list of files associated with Salesforce records. Users can preview, download, and delete selected files, offering a seamless and efficient file management experience within Salesforce.</description>
+	<isExposed>true</isExposed>
+	<targets>
+		<target>lightning__RecordPage</target>
+		<target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+	</targets>
+	<targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+		   <property name="title" type="String" label="Title" description="The title to display on the Card" default="Files"/>
+		   <property name="isCommunity" type="Boolean" label="Is Community?" description="This Control the datatable features" default="false"/>
+		   <property name="multiple" type="Boolean" label="Allow Multiple File Upload" description="Allow multiple file selection" default="false"/>
+		   <property name="format" type="String" label="Accepted File Formats" description="Comma-separated list of accepted file formats eg. pdf,png,jpg" default="pdf,png,jpg"/>
+		   <property name="allowPreview" type="Boolean" label="Allow File Preview" description="Enable or disable file preview" default="false"/>
+		   <property name="allowUpload" type="Boolean" label="Allow Upload" description="Enable or disable file upload" default="false"/>
+		   <property name="allowDownload" type="Boolean" label="Allow Download" description="Enable or disable file download" default="false"/>
+		    <property name="allowRemove" type="Boolean" label="Allow Remove from Record" description="Enable or disable file Removal.The file will be removed from the record, but not deleted." default="false"/>
+           <property name="allowDelete" type="Boolean" label="Allow Delete" description="Enable or disable file deletion. Deleting a file also removes it from any records or posts it's attached to." default="false"/>
+		   <property name="allowFileEditDetail" type="Boolean" label="Allow File Edit Detail" description="Enable or disable File Edit Detail Option" default="false"/>
+			
+			<property name="showRefreshIcon" type="Boolean" label="Show Refresh Icon" description="Enable or disable the refresh icon" default="false"/>
+			 <property name="showOwnerName" type="Boolean" label="Show Owner Name in the Datatable" description="Show Owner Name in the Datatable" default="true"/>
+		   <property name="showFileType" type="Boolean" label="Show File Type in the Datatable" description="Show File Type in the Datatable" default="true"/>
+			<property name="showFileSize" type="Boolean" label="Show File Size in the Datatable" description="Show File Size in the Datatable" default="true"/>
+			<property name="showLastModified" type="Boolean" label="Show Last Modified in the Datatable" description="Show Last Modified in the Datatable" default="true"/>
+
+        </targetConfig>
+		<targetConfig targets="lightningCommunity__Default">
+           <property name="recordId" type="String" label="Record ID" description="The value should be {!recordId}."/>
+		   <property name="isCommunity" type="Boolean" label="Is Community?" description="This Control the datatable features" default="true"/>
+		   <property name="title" type="String" label="Title" description="The title to display on the Card" default="Files"/>
+		   <property name="multiple" type="Boolean" label="Allow Multiple File Upload" description="Allow multiple file selection" default="false"/>
+		   <property name="format" type="String" label="Accepted File Formats" description="Comma-separated list of accepted file formats eg. pdf,png,jpg" default="pdf,png,jpg"/>
+            <property name="allowPreview" type="Boolean" label="Allow File Preview" description="Enable or disable file preview" default="false"/>
+		   <property name="allowUpload" type="Boolean" label="Allow Upload" description="Enable or disable file upload" default="false"/>
+		   <property name="allowDownload" type="Boolean" label="Allow Download" description="Enable or disable file download" default="false"/>
+            <property name="allowRemove" type="Boolean" label="Allow Remove from Record" description="Enable or disable file Removal.The file will be removed from the record, but not deleted." default="false"/>
+           <property name="allowDelete" type="Boolean" label="Allow Delete" description="Enable or disable file deletion. Deleting a file also removes it from any records or posts it's attached to." default="false"/>
+		    <property name="allowFileEditDetail" type="Boolean" label="Allow File Edit Detail" description="Enable or disable File Edit Detail Option" default="false"/>
+		   <property name="showRefreshIcon" type="Boolean" label="Show Refresh Icon" description="Enable or disable the refresh icon" default="false"/>
+
+		   <property name="showOwnerName" type="Boolean" label="Show Owner Name  in the Datatable" description="Show Owner Name in the Datatable" default="true"/>
+		   <property name="showFileType" type="Boolean" label="Show File Type in the Datatable" description="Show File Type in the Datatable" default="true"/>
+			<property name="showFileSize" type="Boolean" label="Show File Size in the Datatable" description="Show File Size in the Datatable" default="true"/>
+			<property name="showLastModified" type="Boolean" label="Show Last Modified in the Datatable" description="Show Last Modified in the Datatable" default="true"/>
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

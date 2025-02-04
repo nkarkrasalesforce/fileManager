@@ -1,0 +1,220 @@
+<!-- fileManagerLwc.html -->
+<template>
+    <!-- Main Card Container -->
+    <article class="slds-card slds-custom-card">
+        <!-- Header Section -->
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <!-- File Icon -->
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-account" title={title}>
+                        <lightning-icon 
+                            icon-name='standard:file' 
+                            alternative-text='file' 
+                            size='small' 
+                            title={_title}>
+                        </lightning-icon>
+                        <span class="slds-assistive-text">{_title}</span>
+                    </span>
+                </div>
+
+                <!-- Title -->
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <a 
+                            href={titleUrl} 
+                            onclick={handleAnchorClick} 
+                            class="slds-card__header-link slds-truncate" 
+                            title={_title}
+                        >
+                            <span>{title}</span>
+                        </a>
+                    </h2>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="slds-no-flex slds-grid slds-grid_vertical-align-center">
+                    <!-- Delete Button -->
+                    <button 
+                        disabled={isDeleteDisabled} 
+                        class="slds-button slds-m-right_x-small slds-button_neutral" 
+                        onclick={showDeleteModalHandler}
+                    >
+                        Delete ({selectedFileIds.length})
+                    </button>
+
+                    <!-- Download Button -->
+                    <a 
+                        href={downloadLink} 
+                        target="_blank" 
+                        class={downloadLinkClass}
+                        aria-label="Download selected files ({selectedFileIds.length})"
+                    >
+                        Download ({selectedFileIds.length})
+                    </a>
+
+                    <!-- Add Files Button -->
+                    <template lwc:if={isFileUploadEnabled}>
+                        <lightning-button 
+                            label="Add Files" 
+                            title="Non-primary action" 
+                            onclick={handleAddFiles} 
+                            class="slds-m-right_x-small">
+                        </lightning-button>
+                    </template>
+
+                    <!-- Refresh Button -->
+                    <template lwc:if={showRefreshIcon}>
+                        <lightning-button-icon
+                            icon-name="action:refresh"
+                            onclick={fetchFileInfos}
+                            aria-label="Refresh file list">
+                        </lightning-button-icon>
+                    </template>
+                </div>
+            </header>
+        </div>
+
+        <!-- Body Section -->
+        <div class="slds-card__body slds-card__body_inner slds-m-around_none slds-p-around_none">
+            <!-- Error Message -->
+            <template lwc:if={error}>
+                <p role="alert" aria-live="assertive" class="slds-p-around_medium">
+                    {error}
+                </p>
+            </template>
+
+            <!-- Loading Spinner -->
+            <template lwc:if={showSpinner}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+
+            <!-- File List -->
+            <template lwc:elseif={files.length}>
+                <!-- With Checkbox -->
+                <template lwc:if={showTableCheckbox}>
+                    <div class="max350">
+                    <c-datatable-with-custom-types
+                        key-field="fileId"
+                        data={files}
+                        columns={columns}
+                        onrowselection={handleRowSelection}
+                        onrowaction={callRowAction}
+                        selected-rows={selectedFileIds}
+                        aria-describedby="fileListDescription">
+                    </c-datatable-with-custom-types>
+                    </div>
+                </template>
+                <!-- Without Checkbox -->
+                <template lwc:else>
+                     <div class="max350">
+                    <c-datatable-with-custom-types
+                        key-field="fileId"
+                        data={files}
+                        columns={columns}
+                        onrowselection={handleRowSelection}
+                        onrowaction={callRowAction}
+                        aria-describedby="fileListDescription"
+                        hide-checkbox-column>
+                    </c-datatable-with-custom-types>
+                     </div>
+                </template>
+            </template>
+
+            <!-- No Files Message -->
+            <template lwc:elseif={filesLoaded}>
+                <p class="slds-p-around_medium">No files available.</p>
+            </template>
+        </div>
+        <footer class="slds-card__footer border-none" lwc:if={showViewAll}>
+            <a class="slds-card__footer-action"  href={titleUrl} onclick={handleAnchorClick} >View All
+              <span class="slds-assistive-text">Standard View</span>
+            </a>
+        </footer>
+    </article>
+
+    <!-- File Upload Modal -->
+    <template lwc:if={showFileModal}>
+        <c-file-manager-modal modal-id="fileupload-heading-01" onclosemodal={closeFileModal}>
+            <h1 
+                slot="title" 
+                id="fileupload-heading-01" 
+                class="slds-modal__title slds-hyphenate" 
+                tabindex="-1"
+            >
+                Files
+            </h1>
+            <lightning-file-upload
+                label="Upload Files"
+                variant="label-hidden"
+                name="fileUploader"
+                accept={acceptedFormats}
+                class="file-selector-large"
+                record-id={recordId}
+                onuploadfinished={handleUploadFinished}
+                multiple={multiple}>
+            </lightning-file-upload>
+        </c-file-manager-modal>
+    </template>
+
+    <!-- Delete Confirmation Modal -->
+    <template lwc:if={showDeleteModal}>
+        <c-file-manager-modal modal-id="filedelete-heading-01" onclosemodal={closeDeleteModal}>
+            <h1 
+                slot="title" 
+                id="filedelete-heading-01" 
+                class="slds-modal__title slds-hyphenate" 
+                tabindex="-1"
+            >
+                Delete File(s)?
+            </h1>
+            <p class="slds-p-around_medium slds-text-align--center">
+                The selected file(s) will be permanently deleted and removed from any records or posts they are attached to. 
+                Are you sure you want to proceed?
+            </p>
+            <footer slot="footer" class="slds-modal__footer">
+                <lightning-button 
+                    variant="neutral" 
+                    label="Cancel" 
+                    onclick={closeDeleteModal} 
+                    class="slds-m-right_medium">
+                </lightning-button>
+                <lightning-button 
+                    variant="brand" 
+                    label="Delete" 
+                    onclick={deleteHandler}>
+                </lightning-button>
+            </footer>
+        </c-file-manager-modal>
+    </template>
+
+    <!-- Remove File Modal -->
+    <template lwc:if={showRemoveFileModal}>
+        <c-file-manager-modal modal-id="fileremove-heading-01" onclosemodal={closeRemoveModal}>
+            <h1 
+                slot="title" 
+                id="fileremove-heading-01" 
+                class="slds-modal__title slds-hyphenate" 
+                tabindex="-1"
+            >
+                Remove file?
+            </h1>
+            <p class="slds-p-around_medium slds-text-align--center">
+                The file will be removed from the record, but not deleted.
+            </p>
+            <footer slot="footer" class="slds-modal__footer">
+                <lightning-button 
+                    variant="neutral" 
+                    label="Cancel" 
+                    onclick={closeRemoveModal} 
+                    class="slds-m-right_medium">
+                </lightning-button>
+                <lightning-button 
+                    variant="brand" 
+                    label="Remove from Record" 
+                    onclick={removeFromRecordHandler}>
+                </lightning-button>
+            </footer>
+        </c-file-manager-modal>
+    </template>
+</template>

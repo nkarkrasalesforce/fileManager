@@ -1,0 +1,20 @@
+.file-selector-large .slds-file-selector.slds-file-selector_files{
+    display: flex;
+}
+
+.file-selector-large ,
+.file-selector-large .slds-file-selector__dropzone,
+.file-selector-large .slds-file-selector__dropzone slot {
+  width: 100%;
+}
+
+.file-selector-large .slds-file-selector__dropzone slot {
+  padding: 14px;
+}
+
+.file-selector-large .slds-file-selector__dropzone slot .slds-file-selector__body {
+    flex-direction: column;
+}
+c-file-manager-lwc .slds-scrollable_y, c-file-manager-lwc .slds-scrollable_y>table{
+  width: 100% !important;
+} 
